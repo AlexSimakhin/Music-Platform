@@ -1,25 +1,13 @@
-import styled, { createGlobalStyle } from 'styled-components';
+// import styled from 'styled-components';
+import React from 'react';
+import MainLayout from './../layout/MainLayout';
 
-const Global = createGlobalStyle`
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-`;
 
-const H1 = styled.h1`
-  font-size: 20px;
-`;
-
-const Index = () => {
+const Index: React.FC = () => {
   return (
-    <>
-      <Global />
-      <div>
-        <H1>Главная страница</H1>
-      </div>
-    </>
+    <MainLayout>
+      Main
+    </MainLayout>
   );
 }
 
