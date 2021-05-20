@@ -16,6 +16,12 @@ export default styled.a`
   font-size: 16px;
   border: 2px solid #41addd;
   color: #41addd;
+
+  &.active {
+    border: 2px solid #fff;
+    color: #fff;
+  }
+
   &:active {
     background: #41addd;
     color: #fff;
