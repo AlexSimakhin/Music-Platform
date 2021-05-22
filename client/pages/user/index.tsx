@@ -3,7 +3,7 @@ import MainLayout from './../../layout/MainLayout';
 
 const Index: React.FC = () => {
   return (
-    <MainLayout>
+    <MainLayout title={'Профиль — Музыкальная платформа'}>
       User
     </MainLayout>
   );

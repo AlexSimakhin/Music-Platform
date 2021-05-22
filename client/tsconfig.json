@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/Navbar/A.js"  ],
+, "components/Navbar/A.js", "store/reducers/index.js"  ],
   "exclude": [
     "node_modules"
   ]

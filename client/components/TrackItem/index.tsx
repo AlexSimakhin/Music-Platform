@@ -3,6 +3,7 @@ import { ITrack } from '../../types/track';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlayCircle, faStopCircle } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
+import { useActions } from '../../hooks/useActions';
 
 
 interface TrackItemProps {
@@ -25,12 +26,19 @@ const TrackInfo = styled.div`
   display: flex;
 `;
 
-const TrackItem: React.FC<TrackItemProps> = ({track, active = false }) => {
+const TrackItem: React.FC<TrackItemProps> = ({ track, active = false }) => {
+  const { playTrack, pauseTrack, setActiveTrack } = useActions();
+
+  const play = () => {
+    setActiveTrack(track);
+    playTrack();
+  }
+
   return (
     <TrackWrapper>
-      <FontAwesomeIcon icon={!active ? faPlayCircle : faStopCircle} />
+      <FontAwesomeIcon icon={!active ? faPlayCircle : faStopCircle} onClick={play} />
 
-      <TrackPicture src={track.picture} alt={track.name} />
+      <TrackPicture src={'http://localhost:5000/' + track.picture} alt={track.name} />
 
       <TrackInfo>
         <div>{track.name}</div>

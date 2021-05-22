@@ -4,6 +4,10 @@ import MainLayout from '../../../layout/MainLayout';
 import { useRouter } from 'next/router';
 import { ITrack } from '../../../types/track';
 import TrackList from '../../../components/TrackList';
+import { useActions } from '../../../hooks/useActions';
+import { useTypedSelector } from './../../../hooks/useTypedSelector';
+import { NextThunkDispatch, wrapper } from '../../../store';
+import { fetchTracks } from './../../../store/actions-creators/track';
 
 
 const GridWrapper = styled.div`
@@ -28,21 +32,19 @@ const GridCard = styled.div`
 
 const Index: React.FC = () => {
   const router = useRouter();
+  const { tracks, error } = useTypedSelector(state => state.track);
 
-  const tracks: ITrack[] = [
-    {
-      _id: '1', name: 'Трек 1', artist: 'Исполнитель 1', text: 'Какой-то текст...', listens: 10, audio: 'http://localhost:5000/audio/c467d4f6-0ce5-4d8a-b0c4-0edd218ee8c0.mp3', picture: 'http://localhost:5000/image/3718c514-607d-4bbf-8b2a-a2c912602890.jpg', comments: []
-    },
-    {
-      _id: '2', name: 'Трек 2', artist: 'Исполнитель 2', text: 'Какой-то текст...', listens: 20, audio: 'http://localhost:5000/audio/c467d4f6-0ce5-4d8a-b0c4-0edd218ee8c0.mp3', picture: 'http://localhost:5000/image/3718c514-607d-4bbf-8b2a-a2c912602890.jpg', comments: []
-    },
-    {
-      _id: '3', name: 'Трек 3', artist: 'Исполнитель 3', text: 'Какой-то текст...', listens: 30, audio: 'http://localhost:5000/audio/c467d4f6-0ce5-4d8a-b0c4-0edd218ee8c0.mp3', picture: 'http://localhost:5000/image/3718c514-607d-4bbf-8b2a-a2c912602890.jpg', comments: []
-    },
-  ];
+  if (error) {
+    return (
+      <MainLayout>{error}</MainLayout>
+    )
+  }
 
   return (
-    <MainLayout>
+    <MainLayout
+      title={'Послнедние треки — Музыкальная платформа'}
+      description={'Лучшие треки.'}
+    >
       <GridWrapper>
         <Card>
           <TrackList tracks={tracks} />
@@ -53,3 +55,8 @@ const Index: React.FC = () => {
 }
 
 export default Index;
+
+export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
+  const dispatch = store.dispatch as NextThunkDispatch;
+  await dispatch(await fetchTracks());
+})

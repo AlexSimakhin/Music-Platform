@@ -4,6 +4,8 @@ import MainLayout from '../../layout/MainLayout';
 import { useRouter } from 'next/router';
 import StepWrapper from '../../components/StepWrapper';
 import FileUpload from './../../components/FileUpload/index';
+import { useInput } from './../../hooks/useInput';
+import axios from 'axios';
 
 
 const GridWrapper = styled.div`
@@ -33,9 +35,26 @@ const Index: React.FC = () => {
   const [picture, setPicture] = useState(null);
   const [audio, setAudio] = useState(null);
 
+  const name = useInput('');
+  const artist = useInput('');
+  const text = useInput('');
+
   const next = () => {
     if (activeStep !== 2) {
       setActiveStep(prev => prev + 1);
+    } else {
+      const formData = new FormData();
+      formData.append('name', name.value);
+      formData.append('artist', artist.value);
+      formData.append('text', text.value);
+      formData.append('picture', picture);
+      formData.append('audio', audio);
+
+      axios.post('http://localhost:5000/tracks', formData)
+        .then((resp) => {
+          router.push('/library/songs')
+        })
+        .catch(e => console.log(e));
     }
   };
 
@@ -48,9 +67,9 @@ const Index: React.FC = () => {
       {activeStep === 0 && (
         <div>
           <h1>Шаг 1</h1>
-          <input type="text" placeholder="Название трека" />
-          <input type="text" placeholder="Имя исполнителя" />
-          <textarea rows={3} placeholder="Слова к треку"></textarea>
+          <input {...name} type="text" placeholder="Название трека" />
+          <input {...artist} type="text" placeholder="Имя исполнителя" />
+          <textarea {...text} rows={3} placeholder="Слова к треку"></textarea>
         </div>
       )}
       {activeStep === 1 && (
@@ -67,7 +86,7 @@ const Index: React.FC = () => {
   );
 
   return (
-    <MainLayout>
+    <MainLayout title={'Добавление трека — Музыкальная платформа'}>
       <StepWrapper activeStep={activeStep}>
         {activeStepJSX}
       </StepWrapper>

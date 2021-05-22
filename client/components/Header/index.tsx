@@ -8,6 +8,9 @@ import logoPath from './LogoWhite.svg';
 import LogoLink from './LogoLink';
 import NavBar from './NavBar';
 import HeaderLink from './HeaderLink';
+import { useDispatch } from 'react-redux';
+import { NextThunkDispatch } from '../../store';
+import { searchTracks } from '../../store/actions-creators/track';
 
 
 const menuItems = [
@@ -70,8 +73,24 @@ const UserImage = styled.img`
 
 
 const Header = () => {
-  const [inputValue, setInputValue] = useState('');
+  const [query, setQuery] = useState<string>('');
   const router = useRouter();
+  const dispatch = useDispatch() as NextThunkDispatch;
+  const [timer, setTimer] = useState(null);
+
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    setTimer(
+      setTimeout(async () => {
+        await dispatch(await searchTracks(e.target.value));
+      }, 500)
+    );
+  };
 
   const navJSX = menuItems.map(({ text, href }, index) => {
     return (
@@ -80,8 +99,6 @@ const Header = () => {
       </HeaderLink>
     )
   });
-
-  
 
   return (
     <HeaderStyle>
@@ -95,7 +112,7 @@ const Header = () => {
           {navJSX}
         </NavBar>
 
-        <SearchInput onChange={e => setInputValue(e.target.value)} />
+        <SearchInput onChange={search} />
 
       </NavBarWrapper>
 

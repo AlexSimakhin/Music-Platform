@@ -1,3 +1,6 @@
+import React, {FC} from 'react';
+import {AppProps} from 'next/app';
+import { wrapper } from '../store';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
@@ -14,7 +17,7 @@ const theme = {
   },
 };
 
-export default function App({ Component, pageProps }) {
+const WrappedApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <GlobalStyle />
@@ -24,3 +27,5 @@ export default function App({ Component, pageProps }) {
     </>
   )
 };
+
+export default wrapper.withRedux(WrappedApp);

@@ -1,10 +1,11 @@
 import React from 'react';
+import MainLayout from '../../layout/MainLayout';
 
 const Index = () => {
   return (
-    <div>
-      Explore
-    </div>
+    <MainLayout title={'Лучшие треки — Музыкальная платформа'}>
+      Тренд
+    </MainLayout>
   );
 }
 
